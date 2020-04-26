@@ -65,7 +65,6 @@ class CutImage{
             let drawWidth,drawHeight,x,y;
             //让屏幕以最大的比例显示图像
             switch (true) {
-
                 case img.width > this.bgPos.width:
                     drawWidth = this.bgPos.width;
                     drawHeight = img.height / this.startImg.ratioW;
@@ -73,7 +72,6 @@ class CutImage{
                 case img.height >this.bgPos.height:
                     drawHeight = this.bgPos.height;
                     drawWidth = img.width / this.startImg.ratioH;
-                    console.log(111)
                     break;
                 default:
                     drawWidth = img.width;
