@@ -1,3 +1,22 @@
+/**
+ * const cut =  new CutImage({
+                bgCanvas:document.getElementById('bgCanvas'),
+                cutCanvas:document.getElementById('cutCanvas),
+                img:require('./assets/images/2.jpg'),
+               cutShape:[
+                    {x:w/2,y:0},
+                    {x:w,y:h},
+                    {x:0,y:h},
+                ],//[arc,prismatic,rect]=[圆，棱形，矩形]
+            })
+ //cutShape:参数是裁剪宽的样式，接收一个坐标数组（[x:0,y:0]）或是一个字符串（arc、		  prismatic、rect）
+ //调用success方法返回裁剪图片base64的数据
+ cut.success();
+ //调用destroy()方法会销毁
+ cut.destroy();
+ * **/
+
+
 //检查图片是否跨域
 import isCrossOrigin from "./isCrossOrigin";
 //禁止页面滚动滚动
@@ -78,12 +97,19 @@ class CutImage{
                     drawHeight = img.height;
             }
             //计算最小缩放倍数
-            const Min = Math.min(drawHeight, drawWidth);
-            const minwidth = Math.min(this.cutPos.width,this.cutPos.height);
-            this.minScale = minwidth / Min;
-            if (minwidth > Min) {
-                this.nowScale = this.minScale;
+            const Minw = this.cutPos.width/drawWidth;
+            const Minh = this.cutPos.height/drawHeight;
+            const Min = Math.max(Minw,Minh);
+            this.minScale = Min;
+            // const Min = Math.min(drawHeight, drawWidth);
+            // const minwidth = Math.max(this.cutPos.width,this.cutPos.height);
+            // this.minScale = minwidth / Min;
+            if(this.minScale > this.nowScale){
+                this.nowScale = this.minScale
             }
+            // if (minwidth > Min) {
+            //     this.nowScale = this.minScale;
+            // }
 
             //居中
             x = (this.bgPos.width - drawWidth* this.nowScale)/2;
@@ -395,12 +421,6 @@ class CutImage{
         const base = this.cutCanvas.toDataURL('image/png');
         this.destroy();
         return base;
-    }
-    //取消回调
-    cancel(){
-        //取消回调
-        console.log('点击了取消回调')
-        // this.destroy();
     }
     //销毁，释放内存
     destroy(){

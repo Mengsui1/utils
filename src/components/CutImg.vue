@@ -24,26 +24,13 @@
     import CutImage from "../utils/CutImage";
     export default {
         name: "CutImg",
-        props:[
-          'img'
-        ],
-        data(){
-            return{
-                baseImg:require('@/assets/images/2.jpg'),//默认图片
-            }
-        },
         mounted() {
-            const w = this.$refs.cutCanvas.offsetWidth;
-            const h = this.$refs.cutCanvas.offsetHeight;
+
             this.CutImage =  new CutImage({
                 bgCanvas:this.$refs.bgCanvas,
                 cutCanvas:this.$refs.cutCanvas,
-                img:this.baseImg,
-                cutShape:[
-                    {x:w/2,y:0},
-                    {x:w,y:h},
-                    {x:0,y:h},
-                ],//arc,prismatic,rect
+                img:require('@/assets/images/2.jpg'),
+                cutShape:'rect',//[arc,prismatic,rect]=[圆，棱形，矩形]
             })
         },
         methods:{
@@ -51,7 +38,7 @@
                 this.CutImage.success();
             },
             cancel(){
-                this.CutImage.cancel();
+                this.CutImage.destroy();
             }
         }
     }
@@ -67,7 +54,7 @@
     .bgCanvas{
         width: 100%;
         height: 100%;
-        background-color: #42b983;
+        background-color: #000000;
         position: absolute;
         left: 0;
         top: 0;
@@ -79,11 +66,8 @@
 
     }
     .cutCanvas{
-        width: 546/@vw;
+        width: 346/@vw;
         height: 546/@vw;
-        /*border:1px solid red;*/
-        /*border-radius: 50%;*/
-        /*overflow: hidden;*/
         position: absolute;
         left: 50%;
         margin-left: -273/@vw;
@@ -116,7 +100,7 @@
         top: 0;
         bottom: 0;
         right: 0;
-        background-color: rgba(0,0,0,.5);
+        background-color: rgba(0,0,0,.8);
         z-index: 2;
     }
     .success,.cancel{
