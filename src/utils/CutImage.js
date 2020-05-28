@@ -45,6 +45,10 @@ class CutImage {
     this.minScale = 1;
     //存储手指位置
     this.touchStartFinger = {};
+    //绑定事件
+    this.touchStart = this.touchStart.bind(this);
+    this.touchMove = this.touchMove.bind(this);
+    this.touchEnd = this.touchEnd.bind(this);
     //检查参数
     this.check(obj);
     //画布初始化
@@ -285,9 +289,9 @@ class CutImage {
   //初始化事件
   isEvent() {
     this.destroy();
-    document.ontouchstart = this.touchStart.bind(this);
-    document.ontouchmove = this.touchMove.bind(this);
-    document.ontouchend = this.touchEnd.bind(this);
+    document.addEventListener("touchstart", this.touchStart);
+    document.addEventListener("touchmove", this.touchMove);
+    document.addEventListener("touchend", this.touchEnd);
   }
   touchStart(e) {
     const touches = e.touches;
@@ -377,7 +381,7 @@ class CutImage {
     this._drawImage();
   }
   //成功回调，返回裁剪画布base数据
-  success() {
+  toDataURL() {
     // 成功按钮回调
     this.bgCtx.clearRect(0, 0, this.bgPos.width, this.bgPos.height);
     const base = this.cutCanvas.toDataURL("image/png");
@@ -387,9 +391,10 @@ class CutImage {
   //销毁
   destroy() {
     //销毁事件
-    document.ontouchstart = null;
-    document.ontouchmove = null;
-    document.ontouchend = null;
+
+    document.removeEventListener("touchstart", this.touchStart);
+    document.removeEventListener("touchmove", this.touchMove);
+    document.removeEventListener("touchend", this.touchEnd);
   }
 }
 export default CutImage;

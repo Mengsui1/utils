@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     success() {
-      this.CutImage.success();
+      this.CutImage.toDataURL();
     },
     cancel() {
       this.CutImage.destroy();
